@@ -1,46 +1,58 @@
-﻿@model IEnumerable<BibliotecaMVC.Models.Autor>
-
-@{
-    ViewData["Title"] = "Autores";
+﻿@{
+    ViewData["Title"] = "Inicio";
 }
 
-<h2>Lista de Autores</h2>
 
-<table class="table table-striped table-hover mt-3">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Nacionalidad</th>
-            <th>Fecha de Nacimiento</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var autor in Model)
-        {
-            <tr>
-                <td>@autor.ID</td>
-                <td>@autor.Nombre</td>
-                <td>@autor.Apellido</td>
-                <td>@autor.Nacionalidad</td>
-                <td>@autor.FechaNacimiento.ToString("dd/MM/yyyy")</td>
-                <td>
-                    @if (autor.Activo)
-                    {
-                        <span class="badge bg-success">Activo</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">Inactivo</span>
-                    }
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@autor.ID" class="btn btn-warning btn-sm">Editar</a>
-                        <a asp-action="Delete" asp-route-id="@autor.ID" class="btn btn-danger btn-sm">Eliminar</a>
-                    </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="carruselBiblioteca" class="carousel slide mb-5 shadow" data-bs-ride="carousel">
+    <div class="carousel-inner rounded">
+        <div class="carousel-item active">
+            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&h=400&fit=crop" class="d-block w-100" alt="Biblioteca Virtual">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+                <h2 class="text-white">Bienvenido a tu Biblioteca Virtual</h2>
+                <p>Explora un universo de conocimiento desde cualquier dispositivo.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h3 class="text-center mb-4">Nuestros Servicios</h3>
+
+    <div class="row text-center">
+        <!-- Tarjeta 1 -->
+        <div class="col-md-4 col-sm-12 mb-4">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body">
+                    <h2 class="card-title text-primary"><i class="bi bi-book"></i></h2>
+                    <h5 class="card-title">Catálogo de Libros</h5>
+                    <p class="card-text">Descubre nuestra extensa colección de literatura, programación y fantasía.</p>
+                    <a asp-controller="Libros" asp-action="Index" class="btn btn-outline-primary">Explorar Libros</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta 2 -->
+        <div class="col-md-4 col-sm-12 mb-4">
+            <div class="card h-100 shadow-sm border-success">
+                <div class="card-body">
+                    <h2 class="card-title text-success"><i class="bi bi-person-lines-fill"></i></h2>
+                    <h5 class="card-title">Nuestros Autores</h5>
+                    <p class="card-text">Conoce a las mentes brillantes detrás de tus obras literarias favoritas.</p>
+                    <a asp-controller="Autores" asp-action="Index" class="btn btn-outline-success">Ver Autores</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="col-md-4 col-sm-12 mb-4">
+            <div class="card h-100 shadow-sm border-info">
+                <div class="card-body">
+                    <h2 class="card-title text-info"><i class="bi bi-laptop"></i></h2>
+                    <h5 class="card-title">Lectura 24/7</h5>
+                    <p class="card-text">Disfruta de nuestra plataforma en línea en cualquier momento y lugar.</p>
+                    <button class="btn btn-outline-info" disabled>Próximamente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
