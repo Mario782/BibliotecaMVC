@@ -1,8 +1,51 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1>Sistema de Gestión de Biblioteca</h1>
-    <p>Bienvenido al sistema desarrollado con ASP.NET Core MVC.</p>
-   </div>
+<div id="carruselBiblioteca" class="carousel slide mb-5 shadow" data-bs-ride="carousel">
+    <div class="carousel-inner rounded">
+        <div class="carousel-item active">
+            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&h=400&fit=crop" class="d-block w-100" alt="Biblioteca Virtual">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-3">
+                <h2 class="text-white">Bienvenido a tu Biblioteca Virtual</h2>
+                <p>Explora un universo de conocimiento desde cualquier dispositivo.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <h3 class="text-center mb-4 border-bottom pb-2">Nuestros Servicios (Flexbox)</h3>
+    <section class="contenedor-flex">
+        <article class="tarjeta-reutilizable">
+            <i class="bi bi-book"></i>
+            <h5>Catálogo de Libros</h5>
+            <p>Descubre nuestra extensa colección literaria.</p>
+            <a asp-controller="Libros" asp-action="Index" class="btn btn-outline-primary mt-2">Explorar Libros</a>
+        </article>
+
+        <article class="tarjeta-reutilizable">
+            <i class="bi bi-person-lines-fill"></i>
+            <h5>Nuestros Autores</h5>
+            <p>Conoce a las mentes detrás de tus obras favoritas.</p>
+            <a asp-controller="Autores" asp-action="Index" class="btn btn-outline-primary mt-2">Ver Autores</a>
+        </article>
+    </section>
+
+    <h3 class="text-center mb-4 border-bottom pb-2 mt-5">Categorías Destacadas (CSS Grid)</h3>
+    <section class="contenedor-grid">
+        <div class="p-4 bg-light text-center border rounded shadow-sm">
+            <h4>Fantasía</h4>
+            <p>Sumérgete en mundos épicos y mágicos.</p>
+        </div>
+        <div class="p-4 bg-light text-center border rounded shadow-sm">
+            <h4>Programación</h4>
+            <p>Desarrolla tus habilidades tecnológicas.</p>
+        </div>
+        <div class="p-4 bg-light text-center border rounded shadow-sm">
+            <h4>Literatura Clásica</h4>
+            <p>Las obras maestras que marcaron la historia.</p>
+        </div>
+    </section>
+</div>
