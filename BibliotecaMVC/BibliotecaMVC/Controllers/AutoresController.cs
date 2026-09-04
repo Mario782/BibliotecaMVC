@@ -1,27 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BibliotecaMVC.Models;
+using BibliotecaMVC.Services; // Agregamos la referencia a nuestra carpeta Services
 
 namespace BibliotecaMVC.Controllers
 {
     public class AutoresController : Controller
     {
-        private static List<Autor> autores = new List<Autor>
+        private readonly IAutorService _autorService;
+
+        // Inyección de Dependencias a través del constructor
+        public AutoresController(IAutorService autorService)
         {
-            new Autor { ID = 1, Nombre = "Isabel", Apellido = "Allende", Nacionalidad = "Chilena", FechaNacimiento = new DateTime(1942, 8, 2), Activo = true },
-            new Autor { ID = 2, Nombre = "Gabriel", Apellido = "García Márquez", Nacionalidad = "Colombiana", FechaNacimiento = new DateTime(1927, 3, 6), Activo = false },
-            new Autor { ID = 3, Nombre = "Julio", Apellido = "Cortázar", Nacionalidad = "Argentina", FechaNacimiento = new DateTime(1914, 8, 26), Activo = false },
-            new Autor { ID = 4, Nombre = "Mario", Apellido = "Vargas Llosa", Nacionalidad = "Peruana", FechaNacimiento = new DateTime(1936, 3, 28), Activo = true },
-            new Autor { ID = 5, Nombre = "Laura", Apellido = "Esquivel", Nacionalidad = "Mexicana", FechaNacimiento = new DateTime(1950, 9, 30), Activo = true }
-        };
+            _autorService = autorService;
+        }
 
         public IActionResult Index()
         {
+            var autores = _autorService.ObtenerTodos();
             return View(autores);
         }
 
         public IActionResult Edit(int id)
         {
-            var autor = autores.FirstOrDefault(a => a.ID == id);
+            var autor = _autorService.ObtenerPorId(id);
             if (autor == null) return NotFound();
             return View(autor);
         }
@@ -29,22 +30,13 @@ namespace BibliotecaMVC.Controllers
         [HttpPost]
         public IActionResult Edit(Autor autorModificado)
         {
-            var autor = autores.FirstOrDefault(a => a.ID == autorModificado.ID);
-            if (autor != null)
-            {
-                autor.Nombre = autorModificado.Nombre;
-                autor.Apellido = autorModificado.Apellido;
-                autor.Nacionalidad = autorModificado.Nacionalidad;
-                autor.FechaNacimiento = autorModificado.FechaNacimiento;
-                autor.Activo = autorModificado.Activo;
-                return RedirectToAction("Index");
-            }
-            return View(autorModificado);
+            _autorService.Actualizar(autorModificado);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
-            var autor = autores.FirstOrDefault(a => a.ID == id);
+            var autor = _autorService.ObtenerPorId(id);
             if (autor == null) return NotFound();
             return View(autor);
         }
@@ -52,8 +44,7 @@ namespace BibliotecaMVC.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var autor = autores.FirstOrDefault(a => a.ID == id);
-            if (autor != null) autores.Remove(autor);
+            _autorService.Eliminar(id);
             return RedirectToAction("Index");
         }
     }
