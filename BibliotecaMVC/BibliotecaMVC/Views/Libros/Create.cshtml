@@ -1,0 +1,52 @@
+﻿@model BibliotecaMVC.Models.Libro
+
+@{
+    ViewData["Title"] = "Registrar Libro";
+}
+
+<div class="container mt-4">
+    <h2>Registrar Nuevo Libro</h2>
+    <hr />
+    <div class="row justify-content-center">
+        <div class="col-md-6 card shadow-sm p-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Titulo" class="control-label fw-bold"></label>
+                    <input asp-for="Titulo" class="form-control" placeholder="Ej: Cien años de soledad" />
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Autor" class="control-label fw-bold"></label>
+                    <input asp-for="Autor" class="form-control" placeholder="Ej: Gabriel García Márquez" />
+                    <span asp-validation-for="Autor" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Genero" class="control-label fw-bold"></label>
+                    <input asp-for="Genero" class="form-control" placeholder="Ej: Realismo mágico" />
+                    <span asp-validation-for="Genero" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label asp-for="AnioPublicacion" class="control-label fw-bold"></label>
+                    <input asp-for="AnioPublicacion" class="form-control" type="number" />
+                    <span asp-validation-for="AnioPublicacion" class="text-danger"></span>
+                </div>
+
+                <div class="form-group d-grid gap-2">
+                    <input type="submit" value="Guardar Registro" class="btn btn-success btn-lg" />
+                    <a asp-action="Index" class="btn btn-outline-secondary">Volver al listado</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
