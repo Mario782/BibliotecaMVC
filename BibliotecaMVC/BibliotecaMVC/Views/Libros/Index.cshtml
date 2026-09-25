@@ -19,16 +19,21 @@
                         <th>Autor</th>
                         <th>Género</th>
                         <th>Año</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="fw-bold">@item.Titulo</td>
-                            <td>@item.Autor</td>
-                            <td><span class="badge bg-secondary">@item.Genero</span></td>
-                            <td>@item.AnioPublicacion</td>
+                            <td class="fw-bold align-middle">@item.Titulo</td>
+                            <td class="align-middle">@item.Autor</td>
+                            <td class="align-middle"><span class="badge bg-secondary">@item.Genero</span></td>
+                            <td class="align-middle">@item.AnioPublicacion</td>
+                            <td class="text-center align-middle">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm shadow-sm">✏️ Editar</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm shadow-sm">🗑️ Eliminar</a>
+                            </td>
                         </tr>
                     }
                 </tbody>
