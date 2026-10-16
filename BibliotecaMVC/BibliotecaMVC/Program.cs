@@ -21,6 +21,19 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<Microsoft.AspNetCore.Identity.IdentityRole>>();
+    var roles = new[] { "Administrador", "Usuario" };
+
+    foreach (var role in roles)
+    {
+        if (!roleManager.RoleExistsAsync(role).Result)
+        {
+            roleManager.CreateAsync(new Microsoft.AspNetCore.Identity.IdentityRole(role)).Wait();
+        }
+    }
+}
 
 if (!app.Environment.IsDevelopment())
 {

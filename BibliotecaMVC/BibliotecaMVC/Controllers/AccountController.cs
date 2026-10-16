@@ -32,6 +32,17 @@ namespace BibliotecaMVC.Controllers
 
                 if (result.Succeeded)
                 {
+                    // --- INICIO DE ASIGNACIÓN DE ROLES (Paso 2) ---
+                    if (model.Email.ToLower() == "admin@biblioteca.com")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Administrador");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "Usuario");
+                    }
+                    // --- FIN DE ASIGNACIÓN DE ROLES ---
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
