@@ -8,11 +8,16 @@ namespace BibliotecaMVC.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpGet]
@@ -27,21 +32,33 @@ namespace BibliotecaMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                string[] roles = { "Admin", "Bibliotecario", "Usuario" };
+                foreach (var role in roles)
+                {
+                    if (!await _roleManager.RoleExistsAsync(role))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+
                 var user = new IdentityUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    // --- INICIO DE ASIGNACIÓN DE ROLES (Paso 2) ---
-                    if (model.Email.ToLower() == "admin@biblioteca.com")
+                    var emailStr = model.Email.ToLower();
+                    if (emailStr == "admin@biblioteca.com")
                     {
-                        await _userManager.AddToRoleAsync(user, "Administrador");
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else if (emailStr == "biblio@biblioteca.com")
+                    {
+                        await _userManager.AddToRoleAsync(user, "Bibliotecario");
                     }
                     else
                     {
                         await _userManager.AddToRoleAsync(user, "Usuario");
                     }
-                    // --- FIN DE ASIGNACIÓN DE ROLES ---
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
@@ -72,7 +89,7 @@ namespace BibliotecaMVC.Controllers
 
                 if (user != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName!, model.Password, model.RememberMe, lockoutOnFailure: false);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");

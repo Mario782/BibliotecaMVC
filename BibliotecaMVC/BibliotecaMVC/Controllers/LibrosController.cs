@@ -4,7 +4,7 @@ using BibliotecaMVC.Models;
 
 namespace BibliotecaMVC.Controllers
 {
-    [Authorize] 
+    [Authorize]
     public class LibrosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,8 +20,7 @@ namespace BibliotecaMVC.Controllers
             return View(libros);
         }
 
-
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Admin,Bibliotecario")]
         public IActionResult Create()
         {
             return View();
@@ -29,7 +28,7 @@ namespace BibliotecaMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Admin,Bibliotecario")]
         public IActionResult Create(Libro libro)
         {
             if (ModelState.IsValid)
@@ -41,7 +40,7 @@ namespace BibliotecaMVC.Controllers
             return View(libro);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Admin,Bibliotecario")]
         public IActionResult Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -52,7 +51,7 @@ namespace BibliotecaMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Admin,Bibliotecario")]
         public IActionResult Edit(int id, Libro libro)
         {
             if (id != libro.Id) return NotFound();
@@ -65,7 +64,7 @@ namespace BibliotecaMVC.Controllers
             return View(libro);
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Admin,Bibliotecario")]
         public IActionResult Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -76,7 +75,7 @@ namespace BibliotecaMVC.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Admin,Bibliotecario")]
         public IActionResult DeleteConfirmed(int id)
         {
             var libro = _context.Libros.Find(id);

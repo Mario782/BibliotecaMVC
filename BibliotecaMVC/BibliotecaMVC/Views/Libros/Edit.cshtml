@@ -1,54 +1,54 @@
-﻿@model BibliotecaMVC.Models.Libro
+﻿@model IEnumerable<BibliotecaMVC.Models.Libro>
 
 @{
-    ViewData["Title"] = "Editar Libro";
+    ViewData["Title"] = "Listado de Libros";
 }
 
 <div class="container mt-4">
-    <h2>Editar Libro</h2>
-    <hr />
-    <div class="row justify-content-center">
-        <div class="col-md-6 card shadow-sm p-4 border-warning">
-            <form asp-action="Edit">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📚 Inventario de Libros</h2>
 
-                <input type="hidden" asp-for="Id" />
+        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+        {
+            <a asp-action="Create" class="btn btn-primary shadow-sm">+ Registrar Nuevo Libro</a>
+        }
+    </div>
 
-                <div class="form-group mb-3">
-                    <label asp-for="Titulo" class="control-label fw-bold"></label>
-                    <input asp-for="Titulo" class="form-control" />
-                    <span asp-validation-for="Titulo" class="text-danger"></span>
-                </div>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Género</th>
+                        <th>Año</th>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+                        {
+                            <th class="text-center">Acciones</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold align-middle">@item.Titulo</td>
+                            <td class="align-middle">@item.Autor</td>
+                            <td class="align-middle"><span class="badge bg-secondary">@item.Genero</span></td>
+                            <td class="align-middle">@item.AnioPublicacion</td>
 
-                <div class="form-group mb-3">
-                    <label asp-for="Autor" class="control-label fw-bold"></label>
-                    <input asp-for="Autor" class="form-control" />
-                    <span asp-validation-for="Autor" class="text-danger"></span>
-                </div>
-
-                <div class="form-group mb-3">
-                    <label asp-for="Genero" class="control-label fw-bold"></label>
-                    <input asp-for="Genero" class="form-control" />
-                    <span asp-validation-for="Genero" class="text-danger"></span>
-                </div>
-
-                <div class="form-group mb-4">
-                    <label asp-for="AnioPublicacion" class="control-label fw-bold"></label>
-                    <input asp-for="AnioPublicacion" class="form-control" type="number" />
-                    <span asp-validation-for="AnioPublicacion" class="text-danger"></span>
-                </div>
-
-                <div class="form-group d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
-                    <input type="submit" value="Guardar Cambios" class="btn btn-warning px-4 fw-bold" />
-                </div>
-            </form>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
+                            {
+                                <td class="text-center align-middle">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm shadow-sm">✏️ Editar</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm shadow-sm">🗑️ Eliminar</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using BibliotecaMVC.Models;
+using BibliotecaMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<BibliotecaMVC.Services.IAutorService, BibliotecaMVC.Services.AutorServiceAlternativo>();
+builder.Services.AddScoped<IAutorService, AutorServiceAlternativo>();
 
-builder.Services.AddDbContext<BibliotecaMVC.Models.ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSQL")));
-builder.Services.AddIdentity<Microsoft.AspNetCore.Identity.IdentityUser, Microsoft.AspNetCore.Identity.IdentityRole>(options =>
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireDigit = false;
@@ -15,7 +19,7 @@ builder.Services.AddIdentity<Microsoft.AspNetCore.Identity.IdentityUser, Microso
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 })
-.AddEntityFrameworkStores<BibliotecaMVC.Models.ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
 
@@ -23,14 +27,14 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.RoleManager<Microsoft.AspNetCore.Identity.IdentityRole>>();
-    var roles = new[] { "Administrador", "Usuario" };
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roles = { "Admin", "Bibliotecario", "Usuario" };
 
     foreach (var role in roles)
     {
-        if (!roleManager.RoleExistsAsync(role).Result)
+        if (!await roleManager.RoleExistsAsync(role))
         {
-            roleManager.CreateAsync(new Microsoft.AspNetCore.Identity.IdentityRole(role)).Wait();
+            await roleManager.CreateAsync(new IdentityRole(role));
         }
     }
 }
@@ -38,22 +42,19 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
