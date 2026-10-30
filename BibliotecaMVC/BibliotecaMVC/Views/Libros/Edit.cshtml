@@ -1,54 +1,54 @@
-﻿@model IEnumerable<BibliotecaMVC.Models.Libro>
+﻿@model BibliotecaMVC.Models.Libro
 
 @{
-    ViewData["Title"] = "Listado de Libros";
+    ViewData["Title"] = "Editar Libro";
 }
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📚 Inventario de Libros</h2>
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">✏️ Editar Libro</h4>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Edit" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
 
-        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
-        {
-            <a asp-action="Create" class="btn btn-primary shadow-sm">+ Registrar Nuevo Libro</a>
-        }
-    </div>
+                <div class="mb-3">
+                    <label asp-for="Titulo" class="form-label fw-bold">Título</label>
+                    <input asp-for="Titulo" class="form-control" />
+                    <span asp-validation-for="Titulo" class="text-danger"></span>
+                </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table class="table table-hover mb-0">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Género</th>
-                        <th>Año</th>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
-                        {
-                            <th class="text-center">Acciones</th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td class="fw-bold align-middle">@item.Titulo</td>
-                            <td class="align-middle">@item.Autor</td>
-                            <td class="align-middle"><span class="badge bg-secondary">@item.Genero</span></td>
-                            <td class="align-middle">@item.AnioPublicacion</td>
+                <div class="mb-3">
+                    <label asp-for="Autor" class="form-label fw-bold">Autor</label>
+                    <input asp-for="Autor" class="form-control" />
+                    <span asp-validation-for="Autor" class="text-danger"></span>
+                </div>
 
-                            @if (User.IsInRole("Admin") || User.IsInRole("Bibliotecario"))
-                            {
-                                <td class="text-center align-middle">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm shadow-sm">✏️ Editar</a>
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm shadow-sm">🗑️ Eliminar</a>
-                                </td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                <div class="mb-3">
+                    <label asp-for="Genero" class="form-label fw-bold">Género</label>
+                    <input asp-for="Genero" class="form-control" />
+                    <span asp-validation-for="Genero" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="AnioPublicacion" class="form-label fw-bold">Año de Publicación</label>
+                    <input asp-for="AnioPublicacion" class="form-control" />
+                    <span asp-validation-for="AnioPublicacion" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+                    <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Acceso Denegado";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
+                    <h1 class="display-1 text-warning"><i class="bi bi-shield-lock-fill"></i> 403</h1>
+                    <h2 class="fw-bold mt-3">Acceso Restringido</h2>
+                    <p class="text-muted fs-5 mt-3">
+                        Lo sentimos, tu cuenta no tiene los permisos necesarios para realizar esta acción o ver este contenido.
+                    </p>
+                    <hr class="my-4" />
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a asp-controller="Libros" asp-action="Index" class="btn btn-primary btn-lg px-4 gap-3">
+                            Volver a Libros
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">
+                            Ir al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
